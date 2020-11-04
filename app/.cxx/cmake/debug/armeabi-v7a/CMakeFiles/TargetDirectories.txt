@@ -1,3 +1,0 @@
-/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/new/handseg_android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/rebuild_cache.dir
-/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/new/handseg_android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/edit_cache.dir
-/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/new/handseg_android/app/.cxx/cmake/debug/armeabi-v7a/CMakeFiles/Face.dir
