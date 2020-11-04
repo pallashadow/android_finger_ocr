@@ -1,0 +1,8 @@
+{
+  "ndkDirProperty": "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r15c",
+  "sdkFolder": "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk",
+  "sideBySideNdkFolderNames": [
+    "21.1.6352462",
+    "21.3.6528147"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "ndkFolder": "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r15c",
+  "messages": [
+    {
+      "level": "INFO",
+      "message": "android.ndkVersion from module build.gradle is not set"
+    },
+    {
+      "level": "INFO",
+      "message": "ndk.dir in local.properties is /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r15c"
+    },
+    {
+      "level": "INFO",
+      "message": "ANDROID_NDK_HOME environment variable is not set"
+    },
+    {
+      "level": "INFO",
+      "message": "sdkFolder is /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk"
+    },
+    {
+      "level": "INFO",
+      "message": "Considering /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r15c by ndk.dir"
+    },
+    {
+      "level": "INFO",
+      "message": "Considering /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/ndk-bundle in SDK ndk-bundle folder"
+    },
+    {
+      "level": "INFO",
+      "message": "Considering /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/ndk/21.1.6352462 in SDK ndk folder"
+    },
+    {
+      "level": "INFO",
+      "message": "Rejected /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/ndk-bundle in SDK ndk-bundle folder because that location has no source.properties"
+    },
+    {
+      "level": "INFO",
+      "message": "Rejected /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/ndk/21.1.6352462 in SDK ndk folder because that location has no source.properties"
+    },
+    {
+      "level": "INFO",
+      "message": "Found requested ndk.dir (/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r15c) which has version 15.2.4203891"
+    }
+  ]
+}
