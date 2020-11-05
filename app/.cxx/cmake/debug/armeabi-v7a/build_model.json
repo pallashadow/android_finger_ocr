@@ -1,0 +1,249 @@
+{
+  "abi": "ARMEABI_V7A",
+  "abiPlatformVersion": 15,
+  "buildSettings": {
+    "environmentVariables": []
+  },
+  "cmake": {
+    "cmakeArtifactsBaseFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a",
+    "cmakeServerLogFile": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a/cmake_server_log.txt",
+    "cmakeWrappingBaseFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cxx/debug/armeabi-v7a",
+    "effectiveConfiguration": {
+      "name": "traditional-android-studio-cmake-environment",
+      "description": "Composite reified CMakeSettings configuration",
+      "generator": "Ninja",
+      "inheritEnvironments": [
+        "ndk"
+      ],
+      "buildRoot": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a",
+      "cmakeToolchain": "/home/anqi/android-ndk-r15c/build/cmake/android.toolchain.cmake",
+      "cmakeExecutable": "/home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/cmake",
+      "variables": [
+        {
+          "name": "CMAKE_CXX_FLAGS",
+          "value": "-fopenmp -O2 -fvisibility\u003dhidden -fvisibility-inlines-hidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-math   -std\u003dc++11 -frtti -fexceptions"
+        },
+        {
+          "name": "CMAKE_C_FLAGS",
+          "value": "-fopenmp -O2 -fvisibility\u003dhidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-math"
+        },
+        {
+          "name": "CMAKE_FIND_ROOT_PATH",
+          "value": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/prefab/armeabi-v7a/prefab"
+        },
+        {
+          "name": "CMAKE_BUILD_TYPE",
+          "value": "Debug"
+        },
+        {
+          "name": "CMAKE_TOOLCHAIN_FILE",
+          "value": "/home/anqi/android-ndk-r15c/build/cmake/android.toolchain.cmake"
+        },
+        {
+          "name": "ANDROID_ABI",
+          "value": "armeabi-v7a"
+        },
+        {
+          "name": "ANDROID_NDK",
+          "value": "/home/anqi/android-ndk-r15c"
+        },
+        {
+          "name": "ANDROID_PLATFORM",
+          "value": "android-15"
+        },
+        {
+          "name": "CMAKE_ANDROID_ARCH_ABI",
+          "value": "armeabi-v7a"
+        },
+        {
+          "name": "CMAKE_ANDROID_NDK",
+          "value": "/home/anqi/android-ndk-r15c"
+        },
+        {
+          "name": "CMAKE_EXPORT_COMPILE_COMMANDS",
+          "value": "ON"
+        },
+        {
+          "name": "CMAKE_LIBRARY_OUTPUT_DIRECTORY",
+          "value": "/home/anqi/anqi/work/handSeg_android/app/build/intermediates/cmake/debug/obj/armeabi-v7a"
+        },
+        {
+          "name": "CMAKE_MAKE_PROGRAM",
+          "value": "/home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/ninja"
+        },
+        {
+          "name": "CMAKE_SYSTEM_NAME",
+          "value": "Android"
+        },
+        {
+          "name": "CMAKE_SYSTEM_VERSION",
+          "value": "15"
+        },
+        {
+          "name": "ANDROID_TOOLCHAIN",
+          "value": "clang"
+        }
+      ]
+    }
+  },
+  "cxxBuildFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a",
+  "info": {
+    "abi": "ARMEABI_V7A",
+    "bitness": 64,
+    "deprecated": false,
+    "default": true
+  },
+  "originalCxxBuildFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a",
+  "variant": {
+    "buildSystemArgumentList": [
+      "-DANDROID_TOOLCHAIN\u003dclang"
+    ],
+    "buildTargetSet": [],
+    "implicitBuildTargetSet": [],
+    "cFlagsList": [
+      "-fopenmp -O2 -fvisibility\u003dhidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-math "
+    ],
+    "cmakeSettingsConfiguration": "android-gradle-plugin-predetermined-name",
+    "cppFlagsList": [
+      "-fopenmp -O2 -fvisibility\u003dhidden -fvisibility-inlines-hidden -fomit-frame-pointer -fstrict-aliasing -ffunction-sections -fdata-sections -ffast-math ",
+      "",
+      "-std\u003dc++11",
+      "-frtti",
+      "-fexceptions"
+    ],
+    "isDebuggableEnabled": true,
+    "module": {
+      "buildSystem": "CMAKE",
+      "cmake": {
+        "cmakeExe": "/home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/cmake",
+        "minimumCmakeVersion": "3.10.2",
+        "ninjaExe": "/home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/ninja"
+      },
+      "cmakeToolchainFile": "/home/anqi/android-ndk-r15c/build/cmake/android.toolchain.cmake",
+      "cxxFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx",
+      "gradleModulePathName": ":app",
+      "intermediatesFolder": "/home/anqi/anqi/work/handSeg_android/app/build/intermediates",
+      "makeFile": "/home/anqi/anqi/work/handSeg_android/app/CMakeLists.txt",
+      "moduleBuildFile": "/home/anqi/anqi/work/handSeg_android/app/build.gradle",
+      "moduleRootFolder": "/home/anqi/anqi/work/handSeg_android/app",
+      "ndkDefaultAbiList": [
+        "ARMEABI",
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "MIPS",
+        "MIPS64",
+        "X86",
+        "X86_64"
+      ],
+      "ndkFolder": "/home/anqi/android-ndk-r15c",
+      "ndkMetaAbiList": [
+        {
+          "abi": "ARMEABI",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARMEABI_V7A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "ARM64_V8A",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "MIPS",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "MIPS64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        },
+        {
+          "abi": "X86_64",
+          "bitness": 64,
+          "deprecated": false,
+          "default": true
+        }
+      ],
+      "ndkSupportedAbiList": [
+        "ARMEABI",
+        "ARMEABI_V7A",
+        "ARM64_V8A",
+        "MIPS",
+        "MIPS64",
+        "X86",
+        "X86_64"
+      ],
+      "ndkDefaultStl": "GNUSTL_STATIC",
+      "ndkVersion": "15.2.4203891",
+      "project": {
+        "compilerSettingsCacheFolder": "/home/anqi/anqi/work/handSeg_android/.cxx",
+        "cxxFolder": "/home/anqi/anqi/work/handSeg_android/.cxx",
+        "isBuildOnlyTargetAbiEnabled": true,
+        "isCmakeBuildCohabitationEnabled": false,
+        "isNativeCompilerSettingsCacheEnabled": false,
+        "rootBuildGradleFolder": "/home/anqi/anqi/work/handSeg_android",
+        "sdkFolder": "/home/anqi/Android/Sdk",
+        "isPrefabEnabled": false
+      },
+      "splitsAbiFilterSet": [],
+      "stlSharedObjectMap": {
+        "GNUSTL_SHARED": {
+          "ARMEABI": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi/libgnustl_shared.so",
+          "ARMEABI_V7A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/libgnustl_shared.so",
+          "ARM64_V8A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/arm64-v8a/libgnustl_shared.so",
+          "MIPS": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips/libgnustl_shared.so",
+          "MIPS64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/mips64/libgnustl_shared.so",
+          "X86": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86/libgnustl_shared.so",
+          "X86_64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86_64/libgnustl_shared.so"
+        },
+        "GNUSTL_STATIC": {},
+        "LIBCXX_SHARED": {
+          "ARMEABI": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/armeabi/libc++_shared.so",
+          "ARMEABI_V7A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/armeabi-v7a/libc++_shared.so",
+          "ARM64_V8A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/arm64-v8a/libc++_shared.so",
+          "MIPS": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/mips/libc++_shared.so",
+          "MIPS64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/mips64/libc++_shared.so",
+          "X86": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/x86/libc++_shared.so",
+          "X86_64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/llvm-libc++/libs/x86_64/libc++_shared.so"
+        },
+        "LIBCXX_STATIC": {},
+        "NONE": {},
+        "STLPORT_SHARED": {
+          "ARMEABI": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/armeabi/libstlport_shared.so",
+          "ARMEABI_V7A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/armeabi-v7a/libstlport_shared.so",
+          "ARM64_V8A": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/arm64-v8a/libstlport_shared.so",
+          "MIPS": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/mips/libstlport_shared.so",
+          "MIPS64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/mips64/libstlport_shared.so",
+          "X86": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/x86/libstlport_shared.so",
+          "X86_64": "/home/anqi/android-ndk-r15c/sources/cxx-stl/stlport/libs/x86_64/libstlport_shared.so"
+        },
+        "STLPORT_STATIC": {},
+        "SYSTEM": {}
+      }
+    },
+    "objFolder": "/home/anqi/anqi/work/handSeg_android/app/build/intermediates/cmake/debug/obj",
+    "variantName": "debug",
+    "validAbiList": [
+      "ARMEABI_V7A"
+    ],
+    "prefabDirectory": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/prefab",
+    "prefabPackageDirectoryList": []
+  },
+  "prefabFolder": "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/prefab/armeabi-v7a"
+}
