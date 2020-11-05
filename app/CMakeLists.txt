@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.4.1)
 
 # ##################### OpenCV 环境 ############################
 #设置OpenCV-android-sdk路径
-set( OpenCV_DIR /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/softwares/OpenCV-3.2.0-android-sdk/sdk/native/jni )
+set( OpenCV_DIR /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/softwares/OpenCV-4.5.0-android-sdk/sdk/native/jni )
 
 find_package(OpenCV REQUIRED )
 if(OpenCV_FOUND)
@@ -26,6 +26,8 @@ file(GLOB FACE_SRC src/main/cpp/*.h
 set(FACE_COMPILE_CODE ${FACE_SRC})
 
 #添加ncnn库
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fopenmp -static-openmp")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -static-openmp")
 add_library(libncnn STATIC IMPORTED )
 set_target_properties(libncnn
   PROPERTIES IMPORTED_LOCATION

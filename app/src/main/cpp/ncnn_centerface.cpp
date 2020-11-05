@@ -34,7 +34,7 @@ namespace Face{
 
         //scale
         dynamicScale(resized_w, resized_h);
-        ncnn::resize_bilinear(inblob, in, d_w, d_h);
+        resize_bilinear(inblob, in, d_w, d_h);
 
         ncnn::Extractor ex = net.create_extractor();
         ex.input("input.1", in);

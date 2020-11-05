@@ -38,10 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap faceImage1 = null,faceImage2 = null;
     TextView textView1,textView2,cmpResult;
 
-    private CameraTransform mCameraTransform = new CameraTransform();
-
     private Face mFace = new Face();
     private FaceAlign mFaceAlign = new FaceAlign();
+    private CameraTransform mCameraTransform = new CameraTransform();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",

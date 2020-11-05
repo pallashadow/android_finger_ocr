@@ -33,7 +33,7 @@ Java_com_health_service_face_CameraTransform_CameraTransform(
 
     Mat frameRGBA = cv::Mat(image_height, image_width, CV_8UC4, (uchar*)imageData);
     Mat frameBGR;
-    cvtColor(frameRGBA,frameBGR,CV_RGBA2BGR);
+    cvtColor(frameRGBA,frameBGR,COLOR_RGBA2BGR);
     //Mat img0 = cv::imread("/sdcard/DCIM/Camera/t1.jpg");
     //Mat img1;
     //cv::resize(img0, img1, Size(320,240));
@@ -46,8 +46,11 @@ Java_com_health_service_face_CameraTransform_CameraTransform(
             cropCenter, vision_pad, mtxInner, distort, dynamicVisionHeightFlag, debug);
     Mat alignedBGR = mCameraTransformer->perspectiveTransform2(frameBGR);
 
+    //cv::imwrite("/sdcard/DCIM/Camera/t2_.jpg", frameBGR);
+    //cv::imwrite("/sdcard/DCIM/Camera/t2.jpg", alignedBGR);
+
     Mat alignedRGBA;
-    cvtColor(alignedBGR,alignedRGBA,CV_BGR2RGBA);
+    cvtColor(alignedBGR,alignedRGBA,COLOR_BGR2RGBA);
     int len = alignedRGBA.rows*alignedRGBA.cols*4;
     jbyteArray array1 = env->NewByteArray (len);
     env->SetByteArrayRegion (array1, 0, len, (jbyte*)alignedRGBA.data);
