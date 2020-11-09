@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,8 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap faceImage1 = null,faceImage2 = null;
     TextView textView1,textView2,cmpResult;
 
+
     private CameraTransform mCameraTransform = new CameraTransform();
     private HandSeg mHandSeg = new HandSeg();
+
 
     private Face mFace = new Face();
     private FaceAlign mFaceAlign = new FaceAlign();
@@ -134,8 +137,9 @@ public class MainActivity extends AppCompatActivity {
                 //展示矫正后图片
                 File sdDir = Environment.getExternalStorageDirectory();//get directory
                 String sdPath = sdDir.toString() + "/apks/";
-                byte[] segedData = mHandSeg.HandSeg(imageData, sdPath);
-                faceImage1 = byte2bitmap(segedData, targetWidth, targetHeight);
+                byte[] segedData = mHandSeg.HandSeg(alignedData, sdPath);
+
+                faceImage1 = byte2bitmap(segedData, 320, 240);
                 textView1.setText("pic1 align time:"+timeDetectFace);
                 imageView1.setImageBitmap(faceImage1);
 

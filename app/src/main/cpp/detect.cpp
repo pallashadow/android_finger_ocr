@@ -233,7 +233,7 @@ namespace Face {
 			ncnn::Mat tempIm;
 			copy_cut_border(img, tempIm, (*it).y1, img_h - (*it).y2, (*it).x1, img_w - (*it).x2);
 			ncnn::Mat in;
-			resize_bilinear(tempIm, in, 48, 48);
+			ncnn::resize_bilinear(tempIm, in, 48, 48);
 			ncnn::Extractor ex = Onet.create_extractor();
 			ex.set_num_threads(threadnum);
 			ex.set_light_mode(true);

@@ -19,20 +19,19 @@ Java_com_health_service_face_HandSeg_HandSeg(JNIEnv *env, jobject instance, jbyt
 
     jbyte *imageData = env->GetByteArrayElements(image_, NULL);
 
-    Mat frameRGBA = cv::Mat(320, 240, CV_8UC4, (uchar*)imageData);
+    Mat frameRGBA = cv::Mat(240, 320, CV_8UC4, (uchar*)imageData);
     Mat frameBGR;
-    cvtColor(frameRGBA,frameBGR,CV_RGBA2BGR);
+    cvtColor(frameRGBA,frameBGR,COLOR_RGBA2BGR);
     oHandSeg = new HandSeg();
     const char *faceDetectionModelPath = env->GetStringUTFChars(faceDetectionModelPath_, 0);
-    __android_log_print(ANDROID_LOG_INFO, "lclclc", "segggggggggggggggggggggggggggggggggggg");
     Mat segimg = oHandSeg->segImg(frameBGR, faceDetectionModelPath);
 
-
- //   int len = segimg.rows*segimg.cols*4;
-//    jbyteArray array1 = env->NewByteArray (len);
-//    env->SetByteArrayRegion (array1, 0, len, (jbyte*)segimg.data);
-
- //   return array1;
+    Mat alignedRGBA;
+    cvtColor(segimg,alignedRGBA,COLOR_BGR2RGBA);
+    int len = alignedRGBA.rows*alignedRGBA.cols*4;
+    jbyteArray array1 = env->NewByteArray (len);
+    env->SetByteArrayRegion (array1, 0, len, (jbyte*)alignedRGBA.data);
+    return array1;
 
 
     }

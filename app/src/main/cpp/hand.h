@@ -22,12 +22,12 @@ public:
 
 
 Mat segImg(Mat img, const std::string &model_path){
-    std::string param_files = model_path+"bisenet.param";
-    std::string bin_files = model_path+"bisenet.bin";
+    std::string param_files = model_path+"BiseNet.param";
+    std::string bin_files = model_path+"BiseNet.bin";
 
-    Bisenet.load_param("/storage/emulated/0/apks/bisenet.param");
-    Bisenet.load_model("/storage/emulated/0/apks/bisenet.bin");
-    __android_log_print(ANDROID_LOG_INFO, "lclclc", "模型加载成功%s",param_files.c_str());
+    Bisenet.load_param(param_files.c_str());
+    Bisenet.load_model(bin_files.c_str());
+    __android_log_print(ANDROID_LOG_INFO, "lclclc", "模型加载成功bisenet");
     ncnn::Mat in;
     //cv::imwrite("/storage/emulated/0/apks/123.jpg",img);
 
@@ -39,14 +39,14 @@ Mat segImg(Mat img, const std::string &model_path){
     ex.input("input", in);
     ncnn::Mat out;
     ex.extract("output", out);
+
     ncnn::Mat ch1 = out.channel(0);
+    //__android_log_print(ANDROID_LOG_INFO, "lclclc", "获取网络结果%d,%d",ch2.c, ch2.w);
 
-    ncnn::Mat ch2 = ch1.channel(0);
-    __android_log_print(ANDROID_LOG_INFO, "lclclc", "ssssssssssssssssssssssss%d",out.c);
-    __android_log_print(ANDROID_LOG_INFO, "lclclc", "%d, %d", ch1.w, ch1.h);
-
-    Mat fMapMat;
-    return fMapMat;
+    cv::Mat imageDate(ch1.h, ch1.w, CV_8UC1);
+    ch1.to_pixels(imageDate.data,ncnn::Mat::PIXEL_GRAY);
+    //__android_log_print(ANDROID_LOG_INFO, "lclclc", "取得第n个ch");
+    return imageDate;
 
 }
 
