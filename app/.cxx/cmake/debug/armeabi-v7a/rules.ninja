@@ -25,7 +25,7 @@ rule CUSTOM_COMMAND
 rule CXX_COMPILER__Face
   depfile = $DEP_FILE
   deps = gcc
-  command = /home/anqi/android-ndk-r15c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi --gcc-toolchain=/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=/home/anqi/android-ndk-r15c/sysroot  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
+  command = /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot  $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
   description = Building CXX object $out
 
 
@@ -33,7 +33,7 @@ rule CXX_COMPILER__Face
 # Rule for linking CXX shared library.
 
 rule CXX_SHARED_LIBRARY_LINKER__Face
-  command = $PRE_LINK && /home/anqi/android-ndk-r15c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi --gcc-toolchain=/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64 --sysroot=/home/anqi/android-ndk-r15c/sysroot -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  command = $PRE_LINK && /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64 --sysroot=/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot -fPIC $LANGUAGE_COMPILE_FLAGS $ARCH_FLAGS $LINK_FLAGS -shared $SONAME_FLAG$SONAME -o $TARGET_FILE $in $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking CXX shared library $TARGET_FILE
   restat = $RESTAT
 
@@ -42,7 +42,7 @@ rule CXX_SHARED_LIBRARY_LINKER__Face
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/cmake -H/home/anqi/anqi/work/handSeg_android/app -B/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a
+  command = /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/cmake/3.10.2.4988404/bin/cmake -H/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app -B/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app/.cxx/cmake/debug/armeabi-v7a
   description = Re-running CMake...
   generator = 1
 
@@ -51,7 +51,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = /home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -t clean
+  command = /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/cmake/3.10.2.4988404/bin/ninja -t clean
   description = Cleaning all built files...
 
 
@@ -59,6 +59,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = /home/anqi/Android/Sdk/cmake/3.10.2.4988404/bin/ninja -t targets
+  command = /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/cmake/3.10.2.4988404/bin/ninja -t targets
   description = All primary targets available:
 

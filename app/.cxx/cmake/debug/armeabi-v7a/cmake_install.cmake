@@ -1,4 +1,4 @@
-# Install script for directory: /home/anqi/anqi/work/handSeg_android/app
+# Install script for directory: /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app/.cxx/cmake/debug/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
