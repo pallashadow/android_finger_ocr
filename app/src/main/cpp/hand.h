@@ -1,7 +1,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/opencv.hpp>
 //#include <math.h>
-#include "net.h"
+#include "ncnn/net.h"
 #include <cmath>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>

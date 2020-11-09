@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/handSeg_android.iml" filepath="$PROJECT_DIR$/.idea/modules/handSeg_android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/handSeg_android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/handSeg_android.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/handseg_android.iml" filepath="$PROJECT_DIR$/.idea/modules/handseg_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/handseg_android.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/handseg_android.app.iml" />
     </modules>
   </component>
 </project>

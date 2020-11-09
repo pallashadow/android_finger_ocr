@@ -1,7 +1,7 @@
-set(CMAKE_C_COMPILER "/home/anqi/android-ndk-r15c/toolchains/llvm/prebuilt/linux-x86_64/bin/clang")
+set(CMAKE_C_COMPILER "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/clang")
 set(CMAKE_C_COMPILER_ARG1 "")
 set(CMAKE_C_COMPILER_ID "Clang")
-set(CMAKE_C_COMPILER_VERSION "3.8")
+set(CMAKE_C_COMPILER_VERSION "9.0")
 set(CMAKE_C_COMPILER_VERSION_INTERNAL "")
 set(CMAKE_C_COMPILER_WRAPPER "")
 set(CMAKE_C_STANDARD_COMPUTED_DEFAULT "11")
@@ -16,11 +16,11 @@ set(CMAKE_C_SIMULATE_VERSION "")
 
 
 
-set(CMAKE_AR "/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar")
+set(CMAKE_AR "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ar")
 set(CMAKE_C_COMPILER_AR "CMAKE_C_COMPILER_AR-NOTFOUND")
-set(CMAKE_RANLIB "/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ranlib")
+set(CMAKE_RANLIB "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ranlib")
 set(CMAKE_C_COMPILER_RANLIB "CMAKE_C_COMPILER_RANLIB-NOTFOUND")
-set(CMAKE_LINKER "/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ld")
+set(CMAKE_LINKER "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/bin/arm-linux-androideabi-ld")
 set(CMAKE_COMPILER_IS_GNUCC )
 set(CMAKE_C_COMPILER_LOADED 1)
 set(CMAKE_C_COMPILER_WORKS TRUE)
@@ -65,17 +65,9 @@ if(CMAKE_C_CL_SHOWINCLUDES_PREFIX)
 endif()
 
 
-set(CMAKE_ANDROID_NDK_TOOLCHAIN_HOST_TAG "linux-x86_64")
-set(CMAKE_ANDROID_NDK_TOOLCHAIN_VERSION "clang")
-set(CMAKE_C_ANDROID_TOOLCHAIN_MACHINE "arm-linux-androideabi")
-set(CMAKE_C_ANDROID_TOOLCHAIN_VERSION "4.9")
-set(CMAKE_C_COMPILER_EXTERNAL_TOOLCHAIN "/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64")
-set(CMAKE_C_ANDROID_TOOLCHAIN_PREFIX "/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-")
-set(CMAKE_C_ANDROID_TOOLCHAIN_SUFFIX "")
-
 
 
 
 set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "omp;gcc;dl;c;gcc;dl")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/home/anqi/android-ndk-r15c/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/5.0.300080/lib/linux/arm;/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a/thumb;/home/anqi/android-ndk-r15c/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a/thumb;/home/anqi/android-ndk-r15c/platforms/android-15/arch-arm/usr/lib")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/lib64/clang/9.0.8/lib/linux/arm;/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/armv7-a/thumb;/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/arm-linux-androideabi/lib/armv7-a/thumb;/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi/21;/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib/arm-linux-androideabi;/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/android-ndk-r21d/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/lib")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")

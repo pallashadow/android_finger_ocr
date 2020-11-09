@@ -1,7 +1,2 @@
-ninja: Entering directory `/home/anqi/anqi/work/handSeg_android/app/.cxx/cmake/debug/armeabi-v7a'
-[1/2] Building CXX object CMakeFiles/Face.dir/src/main/cpp/hand.cpp.o
-../../../../src/main/cpp/hand.cpp:38:5: warning: control reaches end of non-void function [-Wreturn-type]
-    }
-    ^
-1 warning generated.
-[2/2] Linking CXX shared library ../../../../build/intermediates/cmake/debug/obj/armeabi-v7a/libFace.so
+ninja: Entering directory `/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app/.cxx/cmake/debug/armeabi-v7a'
+ninja: no work to do.

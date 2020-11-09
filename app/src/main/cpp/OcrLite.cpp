@@ -3,7 +3,8 @@
 #include "OcrLite.h"
 #include "OcrUtils.h"
 #include <iosfwd>
-#include <opencv/cv.hpp>
+//#include <opencv/cv.hpp>
+#include <opencv2/opencv.hpp>
 #include <numeric>
 
 char *readKeysFromAssets(AAssetManager *mgr) {
