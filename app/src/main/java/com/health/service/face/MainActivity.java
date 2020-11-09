@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 
+
 import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,9 +39,13 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap faceImage1 = null,faceImage2 = null;
     TextView textView1,textView2,cmpResult;
 
+
+    private CameraTransform mCameraTransform = new CameraTransform();
+    private HandSeg mHandSeg = new HandSeg();
+
+
     private Face mFace = new Face();
     private FaceAlign mFaceAlign = new FaceAlign();
-    private CameraTransform mCameraTransform = new CameraTransform();
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
@@ -78,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
             copyBigDataToSD("recognition.param");
             copyBigDataToSD("centerface.bin");
             copyBigDataToSD("centerface.param");
+            copyBigDataToSD("bisenet.bin");
+            copyBigDataToSD("bisenet.param");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 int targetWidth=352;
                 float[] mtxInner = {285.6716f,0.0f,159.9292f,0.0f,280.29103f,144.53004f,0.0f,0.0f,1.0f};
                 float[] distort = {0.054286f,-0.697733f,-0.0098f,-0.00233f,1.5394f};
+//                byte[] alignedData = mHandSeg.HandSeg(imageData);
                 byte[] alignedData = mCameraTransform.CameraTransform(
                         imageData, 310, 46.0f,400, 283,
                         yourSelectedImage1.getHeight(), yourSelectedImage1.getWidth(),
@@ -127,7 +135,11 @@ public class MainActivity extends AppCompatActivity {
                         mtxInner, distort, true, true);
                 timeDetectFace = System.currentTimeMillis() - timeDetectFace;
                 //展示矫正后图片
-                faceImage1 = byte2bitmap(alignedData, targetWidth, targetHeight);
+                File sdDir = Environment.getExternalStorageDirectory();//get directory
+                String sdPath = sdDir.toString() + "/apks/";
+                byte[] segedData = mHandSeg.HandSeg(alignedData, sdPath);
+
+                faceImage1 = byte2bitmap(segedData, 320, 240);
                 textView1.setText("pic1 align time:"+timeDetectFace);
                 imageView1.setImageBitmap(faceImage1);
 
