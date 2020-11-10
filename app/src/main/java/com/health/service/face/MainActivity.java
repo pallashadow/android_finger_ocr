@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private CameraTransform mCameraTransform = new CameraTransform();
-    private HandSeg mHandSeg = new HandSeg();
+    private HandSeg mHandSeg = null;
     private OcrEngine mOcrEngine = null;
 
 
@@ -75,17 +75,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
+        final File sdDir = Environment.getExternalStorageDirectory();//get directory
+        final String sdPath = sdDir.toString() + "/apks/";
+        mHandSeg = new HandSeg(this);
         //mOcrEngine = new OcrEngine(getResources().getAssets());
         mOcrEngine = new OcrEngine(this);
-
+        /*
         try {
             copyBigDataToSD("bisenet.bin");
             copyBigDataToSD("bisenet.param");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        final File sdDir = Environment.getExternalStorageDirectory();//get directory
-        final String sdPath = sdDir.toString() + "/apks/";
+        */
 
         //LEFT IMAGE 身份录入流程，包含1.人脸检测 2.人脸矫正裁切 3.人脸身份特征抽取 4.数据录入
         imageView1 = (ImageView) findViewById(R.id.imageView1);
@@ -130,13 +132,14 @@ public class MainActivity extends AppCompatActivity {
 
                 //展示矫正后图片
                 long timeSegHand = System.currentTimeMillis();
-                byte[] segedData = mHandSeg.HandSeg(alignedData, targetWidth, targetHeight, sdPath);
+                byte[] segedData = mHandSeg.HandSeg(alignedData, targetWidth, targetHeight);
                 timeSegHand = System.currentTimeMillis() - timeSegHand;
 
-                //segedImage = byte2bitmap(segedData, targetWidth, targetHeight);
-                segedImage = byte2bitmap(segedData, 320, 240);
+                segedImage = byte2bitmap(segedData, targetWidth, targetHeight);
+                //segedImage = byte2bitmap(segedData, 320, 240);
                 textView2.setText("pic1 align time:"+timeSegHand);
                 imageView2.setImageBitmap(segedImage);
+
             }
         });
 

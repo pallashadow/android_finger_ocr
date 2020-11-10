@@ -7,7 +7,7 @@ import android.graphics.Bitmap
 class OcrEngine(context: Context) {
 //class OcrEngine(assets: AssetManager){
     companion object {
-        const val numThread: Int = 4
+        const val numThread: Int = 1
     }
 
     init {
