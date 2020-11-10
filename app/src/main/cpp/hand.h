@@ -29,9 +29,10 @@ Mat segImg(Mat img, const std::string &model_path){
     Bisenet.load_model(bin_files.c_str());
     __android_log_print(ANDROID_LOG_INFO, "lclclc", "模型加载成功bisenet");
     ncnn::Mat in;
+    int w = img.cols;
+    int h = img.rows;
 
-    in = ncnn::Mat::from_pixels(img.data, ncnn::Mat::PIXEL_BGR2RGB,
-                                img.cols, img.rows);
+    in = ncnn::Mat::from_pixels(img.data, ncnn::Mat::PIXEL_BGR2RGB, w, h);
     ncnn::Extractor ex = Bisenet.create_extractor();
     ex.set_num_threads(threadnum);
     ex.set_light_mode(true);
@@ -43,13 +44,21 @@ Mat segImg(Mat img, const std::string &model_path){
     ncnn::Mat ch1 = out.channel(0);
     __android_log_print(ANDROID_LOG_INFO, "lclclc", "获取网络结果%d,%d,%f",ch1.c, ch1.w, ch1.h);
 
-    //__android_log_print(ANDROID_LOG_INFO, "lclclc", "获取网络结果%d,%d",ch2.c, ch2.w);
-
-    cv::Mat imageDate(ch1.h, ch1.w, CV_8UC1);
-    ch1.to_pixels(imageDate.data,ncnn::Mat::PIXEL_GRAY);
+    cv::Mat out8U(h,w, CV_8UC1);
+    float mean_val = -1.0f;
+    float norm_val = 3.0f;
+    ch1.substract_mean_normalize(&mean_val, &norm_val);
+    ch1.to_pixels(out8U.data,ncnn::Mat::PIXEL_GRAY);
+    /*
+    cv::Mat imageData32F(h, w, CV_32FC1);
+    cv::Mat binary32F(h, w, CV_32FC1);
+    memcpy((uchar*)imageData32F.data, ch1.data, w*h* sizeof(float));
+    cv::threshold(imageData32F, binary32F, -1.0, 255.0, cv::THRESH_BINARY);
+    binary32F.convertTo(out8U, CV_8UC1);
+    */
     //__android_log_print(ANDROID_LOG_INFO, "lclclc", "取得第n个ch");
     // cv::imwrite("/storage/emulated/0/apks/123.jpg",imageDate);
-    return imageDate;
+    return out8U;
 
 }
 

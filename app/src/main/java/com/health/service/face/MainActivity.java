@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 //import com.example.l.mobilefacenet.R;
+import com.benjaminwan.ocrlibrary.OcrEngine;
+import com.benjaminwan.ocrlibrary.OcrResult;
 import com.health.service.face.R;
 
 import java.io.File;
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private CameraTransform mCameraTransform = new CameraTransform();
     private HandSeg mHandSeg = new HandSeg();
+    private OcrEngine mOcrEngine = null;
 
 
     //private Face mFace = new Face();
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         verifyStoragePermissions(this);
+        //mOcrEngine = new OcrEngine(getResources().getAssets());
+        mOcrEngine = new OcrEngine(this);
 
         try {
             copyBigDataToSD("bisenet.bin");
@@ -86,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         imageView1 = (ImageView) findViewById(R.id.imageView1);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         textView1=(TextView)findViewById(R.id.faceInfo1);
+        textView2=(TextView)findViewById(R.id.faceInfo2);
         Button buttonImage1 = (Button) findViewById(R.id.select1);
         buttonImage1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(i, SELECT_IMAGE1);
             }
         });
+        final int targetHeight=288;
+        final int targetWidth=352;
 
         Button buttonDetect1 = (Button) findViewById(R.id.detect1);
         buttonDetect1.setOnClickListener(new View.OnClickListener() {
@@ -102,15 +110,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 if (yourSelectedImage1 == null)
                     return;
-                alignedImage=null;
-                //人脸检测 detect
                 int width = yourSelectedImage1.getWidth();
                 int height = yourSelectedImage1.getHeight();
                 byte[] imageData = bitmap2byte(yourSelectedImage1); // 图片转换
 
                 long timeAlign = System.currentTimeMillis();
-                int targetHeight=288;
-                int targetWidth=352;
                 float[] mtxInner = {285.6716f,0.0f,159.9292f,0.0f,280.29103f,144.53004f,0.0f,0.0f,1.0f};
                 float[] distort = {0.054286f,-0.697733f,-0.0098f,-0.00233f,1.5394f};
 //                byte[] alignedData = mHandSeg.HandSeg(imageData);
@@ -120,22 +124,36 @@ public class MainActivity extends AppCompatActivity {
                         targetHeight, targetWidth, true, 0,
                         mtxInner, distort, true, true);
                 timeAlign = System.currentTimeMillis() - timeAlign;
-                alignedImage = byte2bitmap(alignedData, 320, 240);
+                alignedImage = byte2bitmap(alignedData, targetWidth, targetHeight);
                 textView1.setText("pic1 align time:"+timeAlign);
                 imageView1.setImageBitmap(alignedImage);
 
                 //展示矫正后图片
                 long timeSegHand = System.currentTimeMillis();
-                byte[] segedData = mHandSeg.HandSeg(alignedData, sdPath);
+                byte[] segedData = mHandSeg.HandSeg(alignedData, targetWidth, targetHeight, sdPath);
                 timeSegHand = System.currentTimeMillis() - timeSegHand;
 
+                //segedImage = byte2bitmap(segedData, targetWidth, targetHeight);
                 segedImage = byte2bitmap(segedData, 320, 240);
                 textView2.setText("pic1 align time:"+timeSegHand);
                 imageView2.setImageBitmap(segedImage);
-                
             }
         });
 
+        Button buttonDetect2 = (Button) findViewById(R.id.detect2);
+        buttonDetect2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if (alignedImage == null)
+                    return;
+                Bitmap boxImage = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888);
+                long timeOcr = System.currentTimeMillis();
+                OcrResult ocrResult = mOcrEngine.detect(alignedImage, boxImage, 320);
+                timeOcr = System.currentTimeMillis() - timeOcr;
+                textView2.setText("OCR time:"+timeOcr);
+                imageView2.setImageBitmap(ocrResult.getBoxImg());
+            }
+        });
     }
 
     @Override
