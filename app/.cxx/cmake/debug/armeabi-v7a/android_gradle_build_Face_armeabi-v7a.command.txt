@@ -1,7 +1,0 @@
-Executable : /media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/android/Sdk/cmake/3.10.2.4988404/bin/ninja
-arguments : 
--C
-/media/pallas/69c96109-1b7a-4adc-91e9-e72166a8d823/PROJECTS/android-ncnn/handseg_android/app/.cxx/cmake/debug/armeabi-v7a
-Face
-jvmArgs : 
-

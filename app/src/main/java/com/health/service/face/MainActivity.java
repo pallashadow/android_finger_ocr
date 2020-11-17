@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
                 segedImage = byte2bitmap(segedData, targetWidth, targetHeight);
                 //segedImage = byte2bitmap(segedData, 320, 240);
-                textView2.setText("pic1 align time:"+timeSegHand);
+                textView2.setText("handseg time:"+timeSegHand);
                 imageView2.setImageBitmap(segedImage);
 
             }

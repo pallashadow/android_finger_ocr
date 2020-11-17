@@ -2,9 +2,9 @@
 .gradle
 /.idea/workspace.xml
 /.idea/libraries
+.idea/caches/
 /app/.cxx/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
-app/.cxx/

@@ -34,13 +34,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="1.导入图片(录入)" />
+                        android:text="1.导入图片" />
                     <Button
                         android:id="@+id/detect1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2.添加人脸到库" />
+                        android:text="2.矫正+手分割" />
 
                 </LinearLayout>
 
@@ -76,14 +76,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="3.导入图片（查询）" />
+                        android:text="3.空按钮" />
 
                     <Button
                         android:id="@+id/detect2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="4.人脸检测" />
+                        android:text="4.OCR" />
                 </LinearLayout>
 
                 <TextView

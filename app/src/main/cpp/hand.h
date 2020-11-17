@@ -34,8 +34,10 @@ public:
         //std::string bin_files = model_path+"bisenet.bin";
         //int ret1 = Bisenet.load_param(param_files.c_str());
         //int ret2 = Bisenet.load_model(bin_files.c_str());
-        int ret1 = Bisenet.load_param(mgr, "bisenet.param");
-        int ret2 = Bisenet.load_model(mgr, "bisenet.bin");
+        //int ret1 = Bisenet.load_param(mgr, "bisenet.param");
+        //int ret2 = Bisenet.load_model(mgr, "bisenet.bin");
+        int ret1 = Bisenet.load_param(mgr, "handseg.param");
+        int ret2 = Bisenet.load_model(mgr, "handseg.bin");
         if (ret1!=0 || ret2!=0){
             LOGE("模型加载失败bisenet");
         }else{
@@ -57,7 +59,7 @@ Mat segImg(Mat img){
     ncnn::Mat out;
     ex.extract("output", out);
     ncnn::Mat ch1 = out.channel(0);
-    LOGI("获取网络结果%d,%d,%f",ch1.c, ch1.w, ch1.h);
+    LOGI("获取网络结果%d,%d,%d",ch1.c, ch1.w, ch1.h);
 
     cv::Mat out8U(h,w, CV_8UC1);
     float mean_val = -1.0f;
