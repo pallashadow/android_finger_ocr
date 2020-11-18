@@ -77,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
         verifyStoragePermissions(this);
         final File sdDir = Environment.getExternalStorageDirectory();//get directory
         final String sdPath = sdDir.toString() + "/apks/";
-        mHandSeg = new HandSeg(this);
+        final int alignHeight=288;
+        final int alignWidth=352;
+        mHandSeg = new HandSeg(this, alignWidth, alignHeight, 1);
         //mOcrEngine = new OcrEngine(getResources().getAssets());
         mOcrEngine = new OcrEngine(this);
         /*
@@ -103,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(i, SELECT_IMAGE1);
             }
         });
-        final int targetHeight=288;
-        final int targetWidth=352;
 
         Button buttonDetect1 = (Button) findViewById(R.id.detect1);
         buttonDetect1.setOnClickListener(new View.OnClickListener() {
@@ -123,22 +123,27 @@ public class MainActivity extends AppCompatActivity {
                 byte[] alignedData = mCameraTransform.CameraTransform(
                         imageData, 310, 46.0f,400, 283,
                         yourSelectedImage1.getHeight(), yourSelectedImage1.getWidth(),
-                        targetHeight, targetWidth, true, 0,
+                        alignHeight, alignWidth, true, 0,
                         mtxInner, distort, true, true);
                 timeAlign = System.currentTimeMillis() - timeAlign;
-                alignedImage = byte2bitmap(alignedData, targetWidth, targetHeight);
+                alignedImage = byte2bitmap(alignedData, alignWidth, alignHeight);
                 textView1.setText("pic1 align time:"+timeAlign);
                 imageView1.setImageBitmap(alignedImage);
 
                 //展示矫正后图片
                 long timeSegHand = System.currentTimeMillis();
-                byte[] segedData = mHandSeg.HandSeg(alignedData, targetWidth, targetHeight);
-                timeSegHand = System.currentTimeMillis() - timeSegHand;
-
-                segedImage = byte2bitmap(segedData, targetWidth, targetHeight);
-                //segedImage = byte2bitmap(segedData, 320, 240);
-                textView2.setText("handseg time:"+timeSegHand);
-                imageView2.setImageBitmap(segedImage);
+                //byte[] segedData = mHandSeg.HandSeg(alignedData);
+                int det1 = mHandSeg.detectFinger(alignedData);
+                if (det1==1){
+                    byte[] cropedData = mHandSeg.cropFingerArea(200,100);
+                    segedImage = byte2bitmap(cropedData, alignWidth, alignHeight);
+                    //segedImage = byte2bitmap(segedData, 320, 240);
+                    imageView2.setImageBitmap(segedImage);
+                    timeSegHand = System.currentTimeMillis() - timeSegHand;
+                    textView2.setText("handseg time:"+timeSegHand);
+                }else{
+                    textView2.setText("no finger detected");
+                }
 
             }
         });
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 if (alignedImage == null)
                     return;
-                Bitmap boxImage = Bitmap.createBitmap(targetWidth, targetHeight, Bitmap.Config.ARGB_8888);
+                Bitmap boxImage = Bitmap.createBitmap(alignWidth, alignHeight, Bitmap.Config.ARGB_8888);
                 long timeOcr = System.currentTimeMillis();
                 OcrResult ocrResult = mOcrEngine.detect(alignedImage, boxImage, 320);
                 timeOcr = System.currentTimeMillis() - timeOcr;

@@ -5,6 +5,7 @@
 #include <cmath>
 #include <android/asset_manager.h>
 #include <android/asset_manager_jni.h>
+#include "BitmapUtils.h"
 
 #define TAG "hand.h"
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE,TAG,__VA_ARGS__)
@@ -20,22 +21,28 @@ class HandSeg{
 
 private:
     ncnn::Net Bisenet;
-    int threadnum = 1;
+
 public:
+    cv::Mat bgr;
+    cv::Mat seg8U;
+    cv::Mat point32F;
+    cv::Mat ocrseg;
+    int image_height, image_width;
+    cv::Point fingerPoint = cv::Point(-1,-1);
+    int threadnum = 1;
+    float seg_thr = -1.0f;
+    float heat_thr = 0.04f;
+
     ~HandSeg(){}
     //HandSeg(const std::string &model_path){
-    HandSeg(JNIEnv *env, jobject assetManager, int numOfThread){
+    HandSeg(JNIEnv *env, jobject assetManager, int image_width_, int image_height_, int numOfThread):
+            image_height(image_height_), image_width(image_width_), threadnum(numOfThread)
+    {
         threadnum = numOfThread;
         AAssetManager *mgr = AAssetManager_fromJava(env, assetManager);
         if (mgr == NULL) {
             LOGE("AAssetManager==NULL");
         }
-        //std::string param_files = model_path+"bisenet.param";
-        //std::string bin_files = model_path+"bisenet.bin";
-        //int ret1 = Bisenet.load_param(param_files.c_str());
-        //int ret2 = Bisenet.load_model(bin_files.c_str());
-        //int ret1 = Bisenet.load_param(mgr, "bisenet.param");
-        //int ret2 = Bisenet.load_model(mgr, "bisenet.bin");
         int ret1 = Bisenet.load_param(mgr, "handseg.param");
         int ret2 = Bisenet.load_model(mgr, "handseg.bin");
         if (ret1!=0 || ret2!=0){
@@ -46,38 +53,60 @@ public:
     }
 
 
-Mat segImg(Mat img){
-    int w = img.cols;
-    int h = img.rows;
+    int segImg(const cv::Mat& input)
+    {
+        bgr = input;
+        int w = image_width;
+        int h = image_height;
+        assert(w == bgr.cols && h == bgr.rows);
 
-    ncnn::Mat in = ncnn::Mat::from_pixels(img.data, ncnn::Mat::PIXEL_BGR2RGB, w, h);
-    ncnn::Extractor ex = Bisenet.create_extractor();
-    ex.set_num_threads(threadnum);
-    ex.set_light_mode(true);
+        ncnn::Mat in = ncnn::Mat::from_pixels(bgr.data, ncnn::Mat::PIXEL_BGR2RGB, w, h);
+        const float mean_vals[3] = {128.f, 128.f, 128.f};
+        const float norm_vals[3] = {1/128.f, 1/128.f, 1/128.f};
+        in.substract_mean_normalize(mean_vals, norm_vals);
 
-    ex.input("input", in);
-    ncnn::Mat out;
-    ex.extract("output", out);
-    ncnn::Mat ch1 = out.channel(0);
-    LOGI("获取网络结果%d,%d,%d",ch1.c, ch1.w, ch1.h);
+        ncnn::Extractor ex = Bisenet.create_extractor();
+        ex.set_num_threads(threadnum);
+        ex.set_light_mode(true);
 
-    cv::Mat out8U(h,w, CV_8UC1);
-    float mean_val = -1.0f;
-    float norm_val = 3.0f;
-    ch1.substract_mean_normalize(&mean_val, &norm_val);
-    ch1.to_pixels(out8U.data,ncnn::Mat::PIXEL_GRAY);
-    /*
-    cv::Mat imageData32F(h, w, CV_32FC1);
-    cv::Mat binary32F(h, w, CV_32FC1);
-    memcpy((uchar*)imageData32F.data, ch1.data, w*h* sizeof(float));
-    cv::threshold(imageData32F, binary32F, -1.0, 255.0, cv::THRESH_BINARY);
-    binary32F.convertTo(out8U, CV_8UC1);
-    */
-    //__android_log_print(ANDROID_LOG_INFO, "lclclc", "取得第n个ch");
-    // cv::imwrite("/storage/emulated/0/apks/123.jpg",imageDate);
-    return out8U;
+        ex.input("input", in);
+        ncnn::Mat out;
+        ex.extract("output", out);
+        ncnn::Mat ch1 = out.channel(0);
+        ncnn::Mat ch2 = out.channel(1);
 
-}
+        cv::Mat imageData32F(h, w, CV_32FC1);
+        cv::Mat binary32F(h, w, CV_32FC1);
+        memcpy((uchar*)imageData32F.data, ch1.data, w*h* sizeof(float));
+        cv::threshold(imageData32F, binary32F, seg_thr, 255.0, cv::THRESH_BINARY);
+        binary32F.convertTo(seg8U, CV_8UC1);
+        memcpy((uchar*)point32F.data, ch2.data, w*h* sizeof(float));
+        return 1;
+    }
+
+    int updateFingerPoint(){
+        double minVal, maxVal;
+        cv::Point minLoc, maxLoc;
+        cv::minMaxLoc(point32F, &minVal, &maxVal, &minLoc, &maxLoc );
+        if (maxVal > heat_thr) {
+            fingerPoint = maxLoc;
+            return 1;
+        }else return 0;
+    }
+
+    int cropPointedArea(cv::Mat &seg, int w, int h){
+        int x = fingerPoint.x;
+        int y = fingerPoint.y;
+        int l = max(x-w/2, 0);
+        int r = min(x+w/2, image_width-1);
+        int t = max(y-h/2, 0);
+        int b = min(y+h/2, image_height-1);
+        cv::Rect roi(l,t, r-l, b-t);
+        seg = bgr(roi);
+        return 1;
+    }
+
+
 
 
 };
