@@ -134,13 +134,19 @@ public class MainActivity extends AppCompatActivity {
                 long timeSegHand = System.currentTimeMillis();
                 //byte[] segedData = mHandSeg.HandSeg(alignedData);
                 int det1 = mHandSeg.detectFinger(alignedData);
+
+                byte[] segedData = mHandSeg.debugGetHandSegImage();
+                segedImage = byte2bitmap(segedData, alignWidth, alignHeight);
+                imageView2.setImageBitmap(segedImage);
+
                 if (det1==1){
                     byte[] cropedData = mHandSeg.cropFingerArea(200,100);
-                    segedImage = byte2bitmap(cropedData, alignWidth, alignHeight);
-                    //segedImage = byte2bitmap(segedData, 320, 240);
+                    segedImage = byte2bitmap(cropedData, 200, 100);
                     imageView2.setImageBitmap(segedImage);
                     timeSegHand = System.currentTimeMillis() - timeSegHand;
                     textView2.setText("handseg time:"+timeSegHand);
+
+
                 }else{
                     textView2.setText("no finger detected");
                 }

@@ -42,7 +42,6 @@ Java_com_health_service_face_HandSeg_detectFinger(JNIEnv *env, jobject instance,
 
     mHandSeg->segImg(frameBGR);
     int ret = mHandSeg->updateFingerPoint();
-    //int ret = mHandSeg->cropFinger(frameBGR, w, h);
     env->ReleaseByteArrayElements(image_, imageData, 0);
     //matToBitmap(env, imgOut, output);
     return ret;

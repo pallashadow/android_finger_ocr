@@ -26,7 +26,6 @@ public:
     cv::Mat bgr;
     cv::Mat seg8U;
     cv::Mat point32F;
-    cv::Mat ocrseg;
     int image_height, image_width;
     cv::Point fingerPoint = cv::Point(-1,-1);
     int threadnum = 1;
@@ -50,6 +49,8 @@ public:
         }else{
             LOGI("模型加载成功bisenet");
         }
+        seg8U.create(cv::Size(image_width,image_height), CV_8UC1);
+        point32F.create(cv::Size(image_width,image_height), CV_32FC1);
     }
 
 
@@ -78,9 +79,19 @@ public:
         cv::Mat imageData32F(h, w, CV_32FC1);
         cv::Mat binary32F(h, w, CV_32FC1);
         memcpy((uchar*)imageData32F.data, ch1.data, w*h* sizeof(float));
+        for (int i=0;i<h;i++){
+            for (int j=0;j<w;j++){
+                LOGI("%*.4f ", imageData32F.at<float>(i, j));
+            }
+        }
         cv::threshold(imageData32F, binary32F, seg_thr, 255.0, cv::THRESH_BINARY);
         binary32F.convertTo(seg8U, CV_8UC1);
+
         memcpy((uchar*)point32F.data, ch2.data, w*h* sizeof(float));
+
+        cv::imwrite("/sdcard/DCIM/camera/aligned.jpg", bgr);
+        cv::imwrite("/sdcard/DCIM/camera/seg.jpg", seg8U);
+
         return 1;
     }
 
