@@ -79,18 +79,13 @@ public:
         cv::Mat imageData32F(h, w, CV_32FC1);
         cv::Mat binary32F(h, w, CV_32FC1);
         memcpy((uchar*)imageData32F.data, ch1.data, w*h* sizeof(float));
-        for (int i=0;i<h;i++){
-            for (int j=0;j<w;j++){
-                LOGI("%*.4f ", imageData32F.at<float>(i, j));
-            }
-        }
         cv::threshold(imageData32F, binary32F, seg_thr, 255.0, cv::THRESH_BINARY);
         binary32F.convertTo(seg8U, CV_8UC1);
 
         memcpy((uchar*)point32F.data, ch2.data, w*h* sizeof(float));
 
-        cv::imwrite("/sdcard/DCIM/camera/aligned.jpg", bgr);
-        cv::imwrite("/sdcard/DCIM/camera/seg.jpg", seg8U);
+        //cv::imwrite("/sdcard/DCIM/camera/aligned.jpg", bgr);
+        //cv::imwrite("/sdcard/DCIM/camera/seg.jpg", seg8U);
 
         return 1;
     }

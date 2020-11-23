@@ -52,7 +52,7 @@ Java_com_health_service_face_HandSeg_cropFingerArea(JNIEnv *env, jobject instanc
     Mat ocrseg;
     int ret = mHandSeg->cropPointedArea(ocrseg, w, h);
     Mat cropedRGBA;
-    cvtColor(ocrseg, cropedRGBA, COLOR_GRAY2RGBA);
+    cvtColor(ocrseg, cropedRGBA, COLOR_BGR2RGBA);
     int len = h * w * 4;
     jbyteArray array1 = env->NewByteArray(len);
     env->SetByteArrayRegion(array1, 0, len, (jbyte *) cropedRGBA.data);

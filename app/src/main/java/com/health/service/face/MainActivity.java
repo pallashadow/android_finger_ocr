@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int SELECT_IMAGE1 = 1,SELECT_IMAGE2 = 2;
     private ImageView imageView1,imageView2;
     private Bitmap yourSelectedImage1 = null,yourSelectedImage2 = null;
-    private Bitmap alignedImage = null,segedImage = null;
+    private Bitmap alignedImage = null,segedImage = null, croppedImage = null;
     TextView textView1,textView2,cmpResult;
 
 
@@ -134,18 +134,18 @@ public class MainActivity extends AppCompatActivity {
                 long timeSegHand = System.currentTimeMillis();
                 //byte[] segedData = mHandSeg.HandSeg(alignedData);
                 int det1 = mHandSeg.detectFinger(alignedData);
-
                 byte[] segedData = mHandSeg.debugGetHandSegImage();
                 segedImage = byte2bitmap(segedData, alignWidth, alignHeight);
-                imageView2.setImageBitmap(segedImage);
+                //imageView1.setImageDrawable(null);
+                imageView1.setImageBitmap(segedImage);
+
 
                 if (det1==1){
                     byte[] cropedData = mHandSeg.cropFingerArea(200,100);
-                    segedImage = byte2bitmap(cropedData, 200, 100);
-                    imageView2.setImageBitmap(segedImage);
+                    croppedImage = byte2bitmap(cropedData, 200, 100);
+                    imageView2.setImageBitmap(croppedImage);
                     timeSegHand = System.currentTimeMillis() - timeSegHand;
                     textView2.setText("handseg time:"+timeSegHand);
-
 
                 }else{
                     textView2.setText("no finger detected");

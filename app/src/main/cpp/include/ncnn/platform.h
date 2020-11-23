@@ -17,15 +17,14 @@
 
 #define NCNN_STDIO 1
 #define NCNN_STRING 1
-#define NCNN_SIMPLEOCV 0
-#define NCNN_SIMPLEOMP 0
+#define NCNN_OPENCV 0
 #define NCNN_SIMPLESTL 0
 #define NCNN_THREADS 1
 #define NCNN_BENCHMARK 0
 #define NCNN_PIXEL 1
 #define NCNN_PIXEL_ROTATE 1
-#define NCNN_PIXEL_AFFINE 1
 #define NCNN_VULKAN 0
+#define NCNN_VULKAN_ONLINE_SPIRV 1
 #define NCNN_REQUANT 0
 #define NCNN_RUNTIME_CPU 1
 #define NCNN_AVX2 0
@@ -61,7 +60,30 @@ private:
     // NOTE SRWLock is available from windows vista
     SRWLOCK srwlock;
 };
+#else // _WIN32
+class Mutex
+{
+public:
+    Mutex() { pthread_mutex_init(&mutex, 0); }
+    ~Mutex() { pthread_mutex_destroy(&mutex); }
+    void lock() { pthread_mutex_lock(&mutex); }
+    void unlock() { pthread_mutex_unlock(&mutex); }
+private:
+    friend class ConditionVariable;
+    pthread_mutex_t mutex;
+};
+#endif // _WIN32
 
+class MutexLockGuard
+{
+public:
+    MutexLockGuard(Mutex& _mutex) : mutex(_mutex) { mutex.lock(); }
+    ~MutexLockGuard() { mutex.unlock(); }
+private:
+    Mutex& mutex;
+};
+
+#if (defined _WIN32 && !(defined __MINGW32__))
 class ConditionVariable
 {
 public:
@@ -73,7 +95,21 @@ public:
 private:
     CONDITION_VARIABLE condvar;
 };
+#else // _WIN32
+class ConditionVariable
+{
+public:
+    ConditionVariable() { pthread_cond_init(&cond, 0); }
+    ~ConditionVariable() { pthread_cond_destroy(&cond); }
+    void wait(Mutex& mutex) { pthread_cond_wait(&cond, &mutex.mutex); }
+    void broadcast() { pthread_cond_broadcast(&cond); }
+    void signal() { pthread_cond_signal(&cond); }
+private:
+    pthread_cond_t cond;
+};
+#endif // _WIN32
 
+#if (defined _WIN32 && !(defined __MINGW32__))
 static unsigned __stdcall start_wrapper(void* args);
 class Thread
 {
@@ -93,41 +129,7 @@ private:
     void* _args;
 };
 
-class ThreadLocalStorage
-{
-public:
-    ThreadLocalStorage() { key = TlsAlloc(); }
-    ~ThreadLocalStorage() { TlsFree(key); }
-    void set(void* value) { TlsSetValue(key, (LPVOID)value); }
-    void* get() { return (void*)TlsGetValue(key); }
-private:
-    DWORD key;
-};
-#else // (defined _WIN32 && !(defined __MINGW32__))
-class Mutex
-{
-public:
-    Mutex() { pthread_mutex_init(&mutex, 0); }
-    ~Mutex() { pthread_mutex_destroy(&mutex); }
-    void lock() { pthread_mutex_lock(&mutex); }
-    void unlock() { pthread_mutex_unlock(&mutex); }
-private:
-    friend class ConditionVariable;
-    pthread_mutex_t mutex;
-};
-
-class ConditionVariable
-{
-public:
-    ConditionVariable() { pthread_cond_init(&cond, 0); }
-    ~ConditionVariable() { pthread_cond_destroy(&cond); }
-    void wait(Mutex& mutex) { pthread_cond_wait(&cond, &mutex.mutex); }
-    void broadcast() { pthread_cond_broadcast(&cond); }
-    void signal() { pthread_cond_signal(&cond); }
-private:
-    pthread_cond_t cond;
-};
-
+#else // _WIN32
 class Thread
 {
 public:
@@ -137,18 +139,7 @@ public:
 private:
     pthread_t t;
 };
-
-class ThreadLocalStorage
-{
-public:
-    ThreadLocalStorage() { pthread_key_create(&key, 0); }
-    ~ThreadLocalStorage() { pthread_key_delete(key); }
-    void set(void* value) { pthread_setspecific(key, value); }
-    void* get() { return pthread_getspecific(key); }
-private:
-    pthread_key_t key;
-};
-#endif // (defined _WIN32 && !(defined __MINGW32__))
+#endif // _WIN32
 #else // NCNN_THREADS
 class Mutex
 {
@@ -176,25 +167,7 @@ public:
     ~Thread() {}
     void join() {}
 };
-
-class ThreadLocalStorage
-{
-public:
-    ThreadLocalStorage() {}
-    ~ThreadLocalStorage() {}
-    void set(void* /*value*/) {}
-    void* get() { return 0; }
-};
 #endif // NCNN_THREADS
-
-class MutexLockGuard
-{
-public:
-    MutexLockGuard(Mutex& _mutex) : mutex(_mutex) { mutex.lock(); }
-    ~MutexLockGuard() { mutex.unlock(); }
-private:
-    Mutex& mutex;
-};
 
 } // namespace ncnn
 
