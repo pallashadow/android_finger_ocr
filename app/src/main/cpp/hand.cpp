@@ -13,14 +13,6 @@ static HandSeg *mHandSeg;
 
 extern "C" {
 
-/*
-JNIEXPORT void JNICALL
-Java_com_health_service_face_HandSeg_init(JNIEnv *env, jobject instance, jstring faceDetectionModelPath_){
-const char *faceDetectionModelPath = env->GetStringUTFChars(faceDetectionModelPath_, 0);
-mHandSeg = new HandSeg(faceDetectionModelPath);
-return;
-}
-*/
 JNIEXPORT void JNICALL
 Java_com_health_service_face_HandSeg_init(JNIEnv *env, jobject instance, jobject assetManager,
                                           jint image_width, jint image_height, jint numOfThread) {
@@ -29,61 +21,44 @@ Java_com_health_service_face_HandSeg_init(JNIEnv *env, jobject instance, jobject
 }
 
 JNIEXPORT jint JNICALL
-Java_com_health_service_face_HandSeg_detectFinger(JNIEnv *env, jobject instance,
-                                                  jbyteArray image_) {
-    //bitmapToMat(env, input, imgRGBA);
-    jbyte *imageData = env->GetByteArrayElements(image_, NULL);
-    int h = mHandSeg->image_height;
-    int w = mHandSeg->image_width;
-
-    Mat frameRGBA = cv::Mat(h, w, CV_8UC4, (uchar *) imageData);
-    Mat frameBGR;
+Java_com_health_service_face_HandSeg_detectFinger(JNIEnv *env, jobject instance, jobject inputBitmap) {
+    Mat frameRGBA, frameBGR;
+    bitmapToMat(env, inputBitmap, frameRGBA);
     cvtColor(frameRGBA, frameBGR, COLOR_RGBA2BGR);
 
     mHandSeg->segImg(frameBGR);
     int ret = mHandSeg->updateFingerPoint();
-    env->ReleaseByteArrayElements(image_, imageData, 0);
-    //matToBitmap(env, imgOut, output);
     return ret;
 }
 
-JNIEXPORT jbyteArray JNICALL
-Java_com_health_service_face_HandSeg_cropFingerArea(JNIEnv *env, jobject instance, jint w, jint h) {
-    Mat ocrseg;
-    int ret = mHandSeg->cropPointedArea(ocrseg, w, h);
-    Mat cropedRGBA;
+JNIEXPORT jint JNICALL
+Java_com_health_service_face_HandSeg_cropFingerArea(JNIEnv *env, jobject instance,
+        jobject outputBitmap, jint w, jint h, jfloat scale, jint shiftY) {
+    Mat ocrseg, cropedRGBA;
+    int ret = mHandSeg->cropPointedArea(ocrseg, w, h, scale, shiftY);
     cvtColor(ocrseg, cropedRGBA, COLOR_BGR2RGBA);
-    int len = h * w * 4;
-    jbyteArray array1 = env->NewByteArray(len);
-    env->SetByteArrayRegion(array1, 0, len, (jbyte *) cropedRGBA.data);
-    return array1;
+    matToBitmap(env, cropedRGBA, outputBitmap);
+    return 1;
 }
 
-JNIEXPORT jbyteArray JNICALL
-Java_com_health_service_face_HandSeg_debugGetHandSegImage(JNIEnv *env, jobject instance){
-    int h = mHandSeg->image_height;
-    int w = mHandSeg->image_width;
+JNIEXPORT jint JNICALL
+Java_com_health_service_face_HandSeg_debugGetHandSegImage(JNIEnv *env, jobject instance,
+        jobject outputBitmap){
     Mat cropedRGBA;
     cvtColor(mHandSeg->seg8U, cropedRGBA,COLOR_GRAY2RGBA);
-    int len = h*w*4;
-    jbyteArray array1 = env->NewByteArray (len);
-    env->SetByteArrayRegion (array1, 0, len, (jbyte*)cropedRGBA.data);
-    return array1;
+    matToBitmap(env, cropedRGBA, outputBitmap);
+    return 1;
 }
 
-JNIEXPORT jbyteArray JNICALL
-Java_com_health_service_face_HandSeg_debugGetFingerHeatmap(JNIEnv *env, jobject instance){
-    int h = mHandSeg->image_height;
-    int w = mHandSeg->image_width;
+JNIEXPORT jint JNICALL
+Java_com_health_service_face_HandSeg_debugGetFingerHeatmap(JNIEnv *env, jobject instance, jobject outputBitmap){
     Mat cropedRGBA;
     Mat point8U;
     Mat point32F = mHandSeg->point32F / 0.1 *255.0;
     point32F.convertTo(point8U, CV_8UC1);
     cvtColor(point8U, cropedRGBA,COLOR_GRAY2RGBA);
-    int len = h*w*4;
-    jbyteArray array1 = env->NewByteArray (len);
-    env->SetByteArrayRegion (array1, 0, len, (jbyte*)cropedRGBA.data);
-    return array1;
+    matToBitmap(env, cropedRGBA, outputBitmap);
+    return 1;
 }
 
 JNIEXPORT jintArray JNICALL

@@ -39,7 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView1,imageView2;
     private Bitmap yourSelectedImage1 = null,yourSelectedImage2 = null;
     private Bitmap alignedImage = null,segedImage = null, croppedImage = null;
-    TextView textView1,textView2,cmpResult;
+    TextView textView1,textView2,textView3;
+
+    int fingerCropWidth = 200;
+    int fingerCropHeight = 64;
+    float fingerCropScale = 2.0f;
+    int fingerCropShiftY = 20;
+    int ocrWidth = (int)(fingerCropWidth*fingerCropScale);
+    int ocrHeight = (int)(fingerCropHeight*fingerCropScale);
 
 
     private CameraTransform mCameraTransform = new CameraTransform();
@@ -63,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
                     "android.permission.WRITE_EXTERNAL_STORAGE");
             if (permission != PackageManager.PERMISSION_GRANTED) {
                 // 没有写的权限，去申请写的权限，会弹出对话框
-                ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
+                ActivityCompat.requestPermissions(
+                        activity, PERMISSIONS_STORAGE,REQUEST_EXTERNAL_STORAGE);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,23 +87,15 @@ public class MainActivity extends AppCompatActivity {
         final String sdPath = sdDir.toString() + "/apks/";
         final int alignHeight=288;
         final int alignWidth=352;
-        mHandSeg = new HandSeg(this, alignWidth, alignHeight, 1);
-        //mOcrEngine = new OcrEngine(getResources().getAssets());
-        mOcrEngine = new OcrEngine(this);
-        /*
-        try {
-            copyBigDataToSD("bisenet.bin");
-            copyBigDataToSD("bisenet.param");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
 
-        //LEFT IMAGE 身份录入流程，包含1.人脸检测 2.人脸矫正裁切 3.人脸身份特征抽取 4.数据录入
+        mHandSeg = new HandSeg(this, alignWidth, alignHeight, 1);
+        mOcrEngine = new OcrEngine(this);
+
         imageView1 = (ImageView) findViewById(R.id.imageView1);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         textView1=(TextView)findViewById(R.id.faceInfo1);
         textView2=(TextView)findViewById(R.id.faceInfo2);
+        textView3=(TextView)findViewById(R.id.textView1);
         Button buttonImage1 = (Button) findViewById(R.id.select1);
         buttonImage1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,37 +112,33 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View arg0) {
                 if (yourSelectedImage1 == null)
                     return;
-                int width = yourSelectedImage1.getWidth();
-                int height = yourSelectedImage1.getHeight();
-                byte[] imageData = bitmap2byte(yourSelectedImage1); // 图片转换
 
                 long timeAlign = System.currentTimeMillis();
-                float[] mtxInner = {285.6716f,0.0f,159.9292f,0.0f,280.29103f,144.53004f,0.0f,0.0f,1.0f};
+                //float[] mtxInner = {285.6716f,0.0f,159.9292f,0.0f,280.291f,144.53f,0.0f,0.0f,1.0f};
+                float[] mtxInner = {570.0f ,0.0f,320.0f,0.0f,560.0f,289.9f,0.0f,0.0f,1.0f};
                 float[] distort = {0.054286f,-0.697733f,-0.0098f,-0.00233f,1.5394f};
-//                byte[] alignedData = mHandSeg.HandSeg(imageData);
-                byte[] alignedData = mCameraTransform.CameraTransform(
-                        imageData, 310, 46.0f,400, 283,
-                        yourSelectedImage1.getHeight(), yourSelectedImage1.getWidth(),
+                alignedImage = Bitmap.createBitmap(alignWidth, alignHeight, Bitmap.Config.ARGB_8888);
+                mCameraTransform.CameraTransform(
+                        yourSelectedImage1, alignedImage,
+                        310, 46.0f,400, 283,
+                        //240, 320,
+                        480, 640,
                         alignHeight, alignWidth, true, 0,
                         mtxInner, distort, true, true);
                 timeAlign = System.currentTimeMillis() - timeAlign;
-                alignedImage = byte2bitmap(alignedData, alignWidth, alignHeight);
                 textView1.setText("pic1 align time:"+timeAlign);
                 imageView1.setImageBitmap(alignedImage);
 
                 //展示矫正后图片
                 long timeSegHand = System.currentTimeMillis();
-                //byte[] segedData = mHandSeg.HandSeg(alignedData);
-                int det1 = mHandSeg.detectFinger(alignedData);
-                byte[] segedData = mHandSeg.debugGetHandSegImage();
-                segedImage = byte2bitmap(segedData, alignWidth, alignHeight);
-                //imageView1.setImageDrawable(null);
-                imageView1.setImageBitmap(segedImage);
-
+                int det1 = mHandSeg.detectFinger(alignedImage);
 
                 if (det1==1){
-                    byte[] cropedData = mHandSeg.cropFingerArea(200,100);
-                    croppedImage = byte2bitmap(cropedData, 200, 100);
+                    croppedImage = Bitmap.createBitmap(
+                            ocrWidth, ocrHeight,
+                            Bitmap.Config.ARGB_8888);
+                    mHandSeg.cropFingerArea(croppedImage, fingerCropWidth, fingerCropHeight,
+                            fingerCropScale, fingerCropShiftY);
                     imageView2.setImageBitmap(croppedImage);
                     timeSegHand = System.currentTimeMillis() - timeSegHand;
                     textView2.setText("handseg time:"+timeSegHand);
@@ -156,16 +152,40 @@ public class MainActivity extends AppCompatActivity {
 
         Button buttonDetect2 = (Button) findViewById(R.id.detect2);
         buttonDetect2.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View arg0) {
+                 segedImage = Bitmap.createBitmap(alignWidth, alignHeight, Bitmap.Config.ARGB_8888);
+                 mHandSeg.debugGetHandSegImage(segedImage);
+                 imageView1.setImageBitmap(segedImage);
+             }
+         });
+
+        Button buttonDetect3 = (Button) findViewById(R.id.detect3);
+        buttonDetect3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if (alignedImage == null)
+                if (croppedImage == null)
                     return;
-                Bitmap boxImage = Bitmap.createBitmap(alignWidth, alignHeight, Bitmap.Config.ARGB_8888);
+                Bitmap boxImage = Bitmap.createBitmap(
+                        ocrWidth, ocrHeight, Bitmap.Config.ARGB_8888);
                 long timeOcr = System.currentTimeMillis();
-                OcrResult ocrResult = mOcrEngine.detect(alignedImage, boxImage, 320);
+                OcrResult ocrResult = mOcrEngine.detect(croppedImage, boxImage, 320);
                 timeOcr = System.currentTimeMillis() - timeOcr;
                 textView2.setText("OCR time:"+timeOcr);
                 imageView2.setImageBitmap(ocrResult.getBoxImg());
+                textView3.setText(ocrResult.getStrRes());
+            }
+        });
+
+        Button buttonDetect4 = (Button) findViewById(R.id.detect4);
+        buttonDetect4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                imageView1.setImageDrawable(null);
+                imageView2.setImageDrawable(null);
+                textView1.setText("");
+                textView2.setText("");
+                textView3.setText("");
             }
         });
     }
@@ -202,7 +222,8 @@ public class MainActivity extends AppCompatActivity {
         // Decode image size
         BitmapFactory.Options o = new BitmapFactory.Options();
         o.inJustDecodeBounds = true;
-        BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o);
+        BitmapFactory.decodeStream(
+                getContentResolver().openInputStream(selectedImage), null, o);
 
         // The new size we want to scale to
         final int REQUIRED_SIZE = 400;
@@ -223,52 +244,9 @@ public class MainActivity extends AppCompatActivity {
         // Decode with inSampleSize
         BitmapFactory.Options o2 = new BitmapFactory.Options();
         o2.inSampleSize = scale;
-        return BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage), null, o2);
+        return BitmapFactory.decodeStream(
+                getContentResolver().openInputStream(selectedImage), null, o2);
     }
 
-    //get pixels
-    private static byte[] bitmap2byte(final Bitmap bitmap) {
-        ByteBuffer byteBuffer = ByteBuffer.allocate(bitmap.getByteCount());
-        bitmap.copyPixelsToBuffer(byteBuffer);
-        byte[] bytes = byteBuffer.array();
-        return bytes;
-    }
-
-    private static Bitmap byte2bitmap(final byte[] data, int width, int height) {
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        bitmap.copyPixelsFromBuffer(buffer);
-        return bitmap;
-    }
-
-    private void copyBigDataToSD(String strOutFileName) throws IOException {
-        Log.i(TAG, "start copy file " + strOutFileName);
-        File sdDir = Environment.getExternalStorageDirectory();//get directory
-        File file = new File(sdDir.toString()+"/facem/");
-        if (!file.exists()) {
-            file.mkdir();
-        }
-
-        String tmpFile = sdDir.toString()+"/facem/" + strOutFileName;
-        File f = new File(tmpFile);
-        if (f.exists()) {
-            Log.i(TAG, "file exists " + strOutFileName);
-            return;
-        }
-        InputStream myInput;
-        java.io.OutputStream myOutput = new FileOutputStream(sdDir.toString()+"/facem/"+ strOutFileName);
-        myInput = this.getAssets().open(strOutFileName);
-        byte[] buffer = new byte[1024];
-        int length = myInput.read(buffer);
-        while (length > 0) {
-            myOutput.write(buffer, 0, length);
-            length = myInput.read(buffer);
-        }
-        myOutput.flush();
-        myInput.close();
-        myOutput.close();
-        Log.i(TAG, "end copy file " + strOutFileName);
-
-    }
 
 }

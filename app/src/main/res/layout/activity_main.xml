@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="2.矫正+手分割" />
+                        android:text="2.矫正+指尖" />
 
                 </LinearLayout>
 
@@ -72,14 +72,14 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/select2"
+                        android:id="@+id/detect2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="3.空按钮" />
+                        android:text="3.显示分割" />
 
                     <Button
-                        android:id="@+id/detect2"
+                        android:id="@+id/detect3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -116,11 +116,11 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/facecmp"
+                    android:id="@+id/detect4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="5.人脸识别" />
+                    android:text="5.清空" />
 
                 <TextView
                     android:id="@+id/textView1"

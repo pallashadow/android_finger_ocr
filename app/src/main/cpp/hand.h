@@ -100,19 +100,27 @@ public:
         }else return 0;
     }
 
-    int cropPointedArea(cv::Mat &seg, int w, int h){
-        int x = fingerPoint.x;
-        int y = fingerPoint.y;
-        int l = max(x-w/2, 0);
-        int r = min(x+w/2, image_width-1);
-        int t = max(y-h/2, 0);
-        int b = min(y+h/2, image_height-1);
-        cv::Rect roi(l,t, r-l, b-t);
-        seg = bgr(roi);
+    int cropPointedArea(cv::Mat &seg, int w, int h, float scale=1.0f, int shiftY=0){
+        assert(w%2==0 && h%2==0);
+        int x = fingerPoint.x; int y = fingerPoint.y - shiftY;
+        int padl = 0; int padt = 0; int padr = 0; int padb = 0;
+        //int w = int(W/scale); int h = int(H/scale);
+        int l = x-w/2; int r = x+w/2; int t = y-h/2; int b = y+h/2;
+        if (l<0) {padl=-l; l=0;}
+        if (t<0) {padt=-t; t=0;}
+        if (r>image_width) {padr = r-image_width; r=image_width;}
+        if (b>image_height) {padb = b-image_height; b=image_height;}
+        cv::Rect roi1(l,t, r-l, b-t);
+
+        cv::Rect roi2(padl, padt, w-padr-padl, h-padb-padt);
+        cv::Mat croppedImage = cv::Mat(cv::Size(w,h), CV_8UC3, cv::Scalar(128,128,128));
+        bgr(roi1).copyTo(croppedImage(roi2));
+        if (scale==1.0f){
+            seg = croppedImage;
+        }else{
+            cv::resize(croppedImage, seg, cv::Size(), scale, scale);
+        }
         return 1;
     }
-
-
-
 
 };

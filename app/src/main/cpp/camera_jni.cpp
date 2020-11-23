@@ -10,6 +10,7 @@
 #include <assert.h>
 #include <opencv2/opencv.hpp>
 #include "camera.h"
+#include "BitmapUtils.h"
 
 
 #define TAG "DetectSo"
@@ -18,26 +19,32 @@ static CameraTransformer *mCameraTransformer;
 
 extern "C" {
 
-JNIEXPORT jbyteArray JNICALL
+JNIEXPORT jint JNICALL
 Java_com_health_service_face_CameraTransform_CameraTransform(
-        JNIEnv *env, jobject instance, jbyteArray image_,
+        JNIEnv *env, jobject instance,
+        //jbyteArray image_,
+        jobject inputBitmap, jobject outputBitmap,
         jfloat camera_height, jfloat camera_angle, jfloat vision_height, jfloat fL240,
-        jint image_height, jint image_width, jint targetHeight, jint targetCropWidth,
+        jint image_height, jint image_width,
+        jint targetHeight, jint targetCropWidth,
         jboolean cropCenter, jint vision_pad, jfloatArray mtxInner_, jfloatArray distort_,
         jboolean dynamicVisionHeightFlag, jboolean debug
 
 ) {
     jfloat *mtxInnerData = env->GetFloatArrayElements(mtxInner_, NULL);
     jfloat *distortData = env->GetFloatArrayElements(distort_, NULL);
-    jbyte *imageData = env->GetByteArrayElements(image_, NULL);
-
-    Mat frameRGBA = cv::Mat(image_height, image_width, CV_8UC4, (uchar*)imageData);
-    Mat frameBGR;
+    Mat frameRGBA, frameBGR;
+    bitmapToMat(env, inputBitmap, frameRGBA);
     cvtColor(frameRGBA,frameBGR,COLOR_RGBA2BGR);
     //Mat img0 = cv::imread("/sdcard/DCIM/Camera/t1.jpg");
     //Mat img1;
     //cv::resize(img0, img1, Size(320,240));
 
+    if (image_height != frameBGR.rows || image_width != frameBGR.cols){
+        Mat frameBGR_;
+        frameBGR.copyTo(frameBGR_);
+        cv::resize(frameBGR_, frameBGR, Size(image_width, image_height));
+    }
     Mat mtxInner = cv::Mat(3,3,CV_32F, mtxInnerData);
     std::vector<float> distort = std::vector<float>(distortData, distortData+5*sizeof(float));
     mCameraTransformer = new CameraTransformer(
@@ -51,14 +58,11 @@ Java_com_health_service_face_CameraTransform_CameraTransform(
 
     Mat alignedRGBA;
     cvtColor(alignedBGR,alignedRGBA,COLOR_BGR2RGBA);
-    int len = alignedRGBA.rows*alignedRGBA.cols*4;
-    jbyteArray array1 = env->NewByteArray (len);
-    env->SetByteArrayRegion (array1, 0, len, (jbyte*)alignedRGBA.data);
+    matToBitmap(env, alignedRGBA, outputBitmap);
 
     env->ReleaseFloatArrayElements(mtxInner_, mtxInnerData, 0);
     env->ReleaseFloatArrayElements(distort_, distortData, 0);
-    env->ReleaseByteArrayElements(image_, imageData, 0);
-    return array1;
+    return 1;
 }
 
 } // end extern "C"
