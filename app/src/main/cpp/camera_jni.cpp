@@ -13,7 +13,7 @@
 #include "BitmapUtils.h"
 
 
-#define TAG "DetectSo"
+#define TAG "CameraTransfrom"
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG,TAG,__VA_ARGS__)
 static CameraTransformer *mCameraTransformer;
 
@@ -35,7 +35,8 @@ Java_com_health_service_face_CameraTransform_CameraTransform(
     jfloat *distortData = env->GetFloatArrayElements(distort_, NULL);
     Mat frameRGBA, frameBGR;
     bitmapToMat(env, inputBitmap, frameRGBA);
-    cvtColor(frameRGBA,frameBGR,COLOR_RGBA2BGR);
+
+    cvtColor(frameRGBA, frameBGR,COLOR_RGBA2BGR);
     //Mat img0 = cv::imread("/sdcard/DCIM/Camera/t1.jpg");
     //Mat img1;
     //cv::resize(img0, img1, Size(320,240));

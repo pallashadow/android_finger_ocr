@@ -17,7 +17,7 @@ adb shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d file:
 
 ## Linux系统连接android测试机
 
-TODO
+https://blog.csdn.net/binglumeng/article/details/69525361
 
 
 # 本地生成ncnn模型（.bin .param）并测试
