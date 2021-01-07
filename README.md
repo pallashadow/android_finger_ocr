@@ -1,5 +1,11 @@
 # android离线指读OCR DEMO
 
+对指尖所指区域做OCR
+
+采用NCNN做离线推理，指读骨干网络为shufflenetv2,主要是参数少。尾部为手分割分支和指尖定位分支。假设摄像头45度拍摄，app/src/main/camera.h 做图像矫正。app/src/main/hand.h指尖神经网络的后处理，输出指尖坐标和debug图片。OCR部分来自https://github.com/ouyanghuiyu/chineseocr_lite。
+
+<p align="center"><img src="ncnn_local_test/demo.png"\></p>
+
 ## 在android-studio中配置项目
 
 下载解压opencv-4.5.0-android-sdk.zip到根目录
